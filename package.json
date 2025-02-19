@@ -1,0 +1,8 @@
+{
+  "name": "leaflet.heatpaths",
+  "version": "0.0.1",
+  "description": "A leaflet plugin for drawing overlaying paths/polylines as a heatmap",
+  "main": "heatpaths.js",
+  "author": "Loïc Gombeaud",
+  "license": "BSD-2-Clause"
+}
