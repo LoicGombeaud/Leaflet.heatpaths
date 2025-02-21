@@ -40,6 +40,7 @@ L.HeatpathsLayer = L.Layer.extend({
 
   redraw: function() {
     if (!this._frame && this._map && !this._map._animating) {
+      this._paths.map((p) => p.addTo(this._map));
       this._frame = L.Util.requestAnimFrame(this._redraw, this);
     }
     return this;
@@ -63,13 +64,13 @@ L.HeatpathsLayer = L.Layer.extend({
       map._panes.overlayPane.appendChild(this._canvas);
     }
 
-    map.on('moveend', this._reset, this);
+    map.on('moveend', this.redraw, this);
 
     if (map.options.zoomAnimation && L.Browser.any3d) {
         map.on('zoomanim', this._animateZoom, this);
     }
 
-    this._reset();
+    this.redraw();
   },
 
   onRemove: function(map) {
@@ -80,7 +81,7 @@ L.HeatpathsLayer = L.Layer.extend({
       map._panes.overlayPane.removeChild(this._canvas);
     }
 
-    map.off('moveend', this._reset, this);
+    map.off('moveend', this.redraw, this);
 
     if (map.options.zoomAnimation) {
         map.off('zoomanim', this._animateZoom, this);
@@ -139,8 +140,6 @@ L.HeatpathsLayer = L.Layer.extend({
     if (this._height !== size.y) {
       this._canvas.height = this._height = size.y;
     }
-
-    this._redraw();
   },
 
   _redraw: function() {
@@ -148,14 +147,13 @@ L.HeatpathsLayer = L.Layer.extend({
       return;
     }
 
+    this._reset();
+
     var i, len, j, len2, path, opacityImageData, opacitySumArray = [], coloredImageData;
     var opacitySumArray = new Array(this._width * this._height).fill(0);
 
     for (i = 0, len = this._paths.length; i < len; i++) {
       path = this._paths[i];
-      path.addTo(this._map);
-      //TODO fix panning issue!
-      path._renderer._redraw();
       pathImageData = path._renderer._ctx.getImageData(0, 0, this._width, this._height).data;
       console.log(pathImageData.length);
 
