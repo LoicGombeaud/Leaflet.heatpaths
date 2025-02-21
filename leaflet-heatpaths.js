@@ -155,7 +155,6 @@ L.HeatpathsLayer = L.Layer.extend({
     for (i = 0, len = this._paths.length; i < len; i++) {
       path = this._paths[i];
       pathImageData = path._renderer._ctx.getImageData(0, 0, this._width, this._height).data;
-      console.log(pathImageData.length);
 
       for (j = 0, len2 = pathImageData.length / 4; j < len2; j++) {
         var opacity = pathImageData[4*j+3];
@@ -163,8 +162,6 @@ L.HeatpathsLayer = L.Layer.extend({
       }
       path.remove();
     }
-    console.log(opacitySumArray.length);
-    console.log(opacitySumArray.filter((e) => e != 0).length);
 
     coloredImageData = new ImageData(this._getColoredImageData(opacitySumArray), this._width, this._height);
     this._canvas.getContext('2d').putImageData(coloredImageData, 0, 0);
