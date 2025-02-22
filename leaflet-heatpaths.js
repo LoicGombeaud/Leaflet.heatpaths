@@ -173,7 +173,7 @@ L.HeatpathsLayer = L.Layer.extend({
     var coloredImageData = new Uint8ClampedArray(opacitySumArray.length * 4);
 
     for (var i = 0, len = opacitySumArray.length, j; i < len; i++) {
-      j = Math.min(opacitySumArray[i] * 4, 1023);
+      j = Math.min(opacitySumArray[i] * 4, 1020);
 
       coloredImageData[4*i] = this._grad[j];
       coloredImageData[4*i+1] = this._grad[j+1];
